@@ -1,2 +1,3 @@
-# ViewerJSON
-JSON viewer Qt 5
+# 1688-json-viewer
+
+Шаблонный репозиторий для задания "Графический просмотрщик JSON"
