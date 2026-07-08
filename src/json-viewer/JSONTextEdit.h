@@ -6,5 +6,8 @@ class JSONTextEdit: public QTextEdit
 {
   Q_OBJECT
 public:
+  JSONTextEdit();
 
+private:
+  
 };

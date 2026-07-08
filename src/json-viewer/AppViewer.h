@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 class AppViewer : public QWidget
 {
@@ -19,6 +20,9 @@ private:
   QAbstractItemModel* m_treeModel;
   QTreeView* m_treeViewer;
   FilesHandler* m_filesHandler;
+
+  QVBoxLayout* m_layout;
+  QHBoxLayout* m_jsonLayout;
 
   QPushButton* m_quitButton;
 };

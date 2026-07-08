@@ -3,6 +3,7 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 add_library(JSONViewer STATIC
     AppViewer.cpp
+    JSONTextEdit.cpp
 )
 
 target_include_directories(JSONViewer PUBLIC
