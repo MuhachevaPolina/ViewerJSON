@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QJsonValue>
+
 #include <memory>
 #include <string>
 #include <utility>
@@ -17,18 +19,13 @@ class JSONTreeNode
   void setNodeData(std::string key, std::string value);
   std::pair<std::string, std::string> getNodeData();
 
-  enum class Type  // remove
-  {
-    String,
-    Array,
-    Object
-  };
-
-  Type getValueType();
+  QJsonValue::Type getValueType();
 
  private:
   std::vector<std::shared_ptr<JSONTreeNode>> m_nodeChildren;
 
-  std::pair<std::string, std::string> m_nodeData;  // rewrite to QJsonArray and QJsonValue
-  Type m_valueType;
+  std::pair<std::string, std::string> m_nodeData;  // use "[size]" for arrays and "{size}" for objects value
+  QJsonValue::Type m_valueType;
 };
+
+// one string per node 
