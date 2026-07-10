@@ -14,12 +14,14 @@ class JSONTreeNode
 
   void setChild(std::shared_ptr<JSONTreeNode> child, int clildIdx);
   std::shared_ptr<JSONTreeNode> getChild(int childIdx);
+  int getChildrenAmount();
   void deleteChild(int childIdx);
 
   void setNodeData(std::string key, std::string value);
   std::pair<std::string, std::string> getNodeData();
 
   QJsonValue::Type getValueType();
+  void setValueType(QJsonValue::Type valType);
 
  private:
   std::vector<std::shared_ptr<JSONTreeNode>> m_nodeChildren;
