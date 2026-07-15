@@ -15,5 +15,5 @@ public:
   void setTreeRoot();
 
 private:
-  std::shared_ptr<JSONTreeNode<T>> m_treeRoot;
+  std::shared_ptr<JSONTreeNode> m_treeRoot;
 };

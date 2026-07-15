@@ -30,4 +30,4 @@ class JSONTreeNode
   QJsonValue::Type m_valueType;
 };
 
-// one string per node 
+// one string key-value per node 

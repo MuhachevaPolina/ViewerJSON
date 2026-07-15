@@ -2,7 +2,43 @@
 
 #include <vector>
 
-void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeNode> node, int depth, int idxInLayer)
+void JSONParser::setJsonDocument()
+{
+  QString jsonInString = QString::fromUtf8(R"json(
+{
+  "course": "Computer science",
+  "students": [
+    {
+      "name": "Иван",
+      "age": 25
+    },
+    {
+      "name": "Петр",
+      "age": 27
+    },
+    {
+      "name": "Софья",
+      "age": 35
+    }
+  ]
+}
+)json");
+
+  QJsonParseError parseError;
+  *m_document = QJsonDocument::fromJson(jsonInString.toUtf8(), &parseError);
+
+  if (parseError.error != QJsonParseError::NoError)
+  {
+    qDebug() << parseError.errorString();
+  }
+}
+
+void JSONParser::parseJsonDocument()
+{
+  
+}
+
+void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeNode> node, int depth, int idxInLayer, bool isArrayElem)
 {
   // recursive
   if(val.isNull())
@@ -21,9 +57,13 @@ void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeN
     {
       node->setNodeData("object", "{" + std::to_string(childrenAmount) + "}");
     }
-    else
+    else if(isArrayElem)
     {
       node->setNodeData(std::to_string(idxInLayer), "{" + std::to_string(childrenAmount) + "}");
+    }
+    else
+    {
+
     }
 
     QStringList keys = obj.keys(); 
