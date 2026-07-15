@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QJsonValue>
+#include <QString>
 
 #include <memory>
 #include <string>
@@ -17,8 +18,8 @@ class JSONTreeNode
   int getChildrenAmount();
   void deleteChild(int childIdx);
 
-  void setNodeData(std::string key, std::string value);
-  std::pair<std::string, std::string> getNodeData();
+  void setNodeData(QString key, QString value);
+  std::pair<QString, QString> getNodeData();
 
   QJsonValue::Type getValueType();
   void setValueType(QJsonValue::Type valType);
@@ -26,7 +27,7 @@ class JSONTreeNode
  private:
   std::vector<std::shared_ptr<JSONTreeNode>> m_nodeChildren;
 
-  std::pair<std::string, std::string> m_nodeData;  // use "[size]" for arrays and "{size}" for objects value
+  std::pair<QString, QString> m_nodeData;  // use "[size]" for arrays and "{size}" for objects value
   QJsonValue::Type m_valueType;
 };
 

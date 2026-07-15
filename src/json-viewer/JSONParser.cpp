@@ -35,10 +35,23 @@ void JSONParser::setJsonDocument()
 
 void JSONParser::parseJsonDocument()
 {
-  
+  QJsonValue val;
+
+  if(m_document->isObject())
+  {
+    val = m_document->object();
+  }
+  else if(m_document->isArray())
+  {
+    val = m_document->array();
+  }
+
+  std::shared_ptr<JSONTreeNode> rootNode = std::make_shared<JSONTreeNode>();
+  parseJsonValue(val, rootNode, 0, 0, false, QString());
+  m_rootNode = rootNode;
 }
 
-void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeNode> node, int depth, int idxInLayer, bool isArrayElem)
+void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeNode> node, int depth, int idxInLayer, bool isArrayElem, QString key)
 {
   // recursive
   if(val.isNull())
@@ -55,15 +68,15 @@ void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeN
 
     if(depth == 0)
     {
-      node->setNodeData("object", "{" + std::to_string(childrenAmount) + "}");
+      node->setNodeData("object", QString::fromStdString("{" + std::to_string(childrenAmount) + "}"));
     }
     else if(isArrayElem)
     {
-      node->setNodeData(std::to_string(idxInLayer), "{" + std::to_string(childrenAmount) + "}");
+      node->setNodeData(QString::fromStdString(std::to_string(idxInLayer)), QString::fromStdString("{" + std::to_string(childrenAmount) + "}"));
     }
     else
     {
-
+      node->setNodeData(key, QString::fromStdString("{" + std::to_string(childrenAmount) + "}"));
     }
 
     QStringList keys = obj.keys(); 
@@ -72,7 +85,7 @@ void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeN
     for(int i = 0; i < childrenAmount; ++i)
     {
       node->setChild(childNode, i);
-      this->parseJsonValue(obj.value(keys[i]), childNode, depth + 1, i);
+      parseJsonValue(obj.value(keys[i]), childNode, depth + 1, i, false, keys[i]);
       childNode = std::make_shared<JSONTreeNode>();
     }
   }
@@ -99,8 +112,13 @@ void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeN
     QString key = str.left(sepIdx);
     QString value = str.mid(sepIdx + 1);
 
-    node->setNodeData(key.toStdString(), value.toStdString());
+    node->setNodeData(key, value);
 
     return;
   }
+}
+
+std::shared_ptr<JSONTreeNode> JSONParser::getTreeNode()
+{
+  return m_rootNode;
 }

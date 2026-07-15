@@ -6,7 +6,6 @@
 
 #include <memory>
 
-template <typename T>
 class JSONTreeItemModel: public QAbstractItemModel
 {
   Q_OBJECT

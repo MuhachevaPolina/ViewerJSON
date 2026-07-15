@@ -6,13 +6,13 @@ JSONTreeNode::JSONTreeNode() {}
 
 void JSONTreeNode::setChild(std::shared_ptr<JSONTreeNode> child, int childIdx)
 {
-  if(childIdx < this->m_nodeChildren.size())
+  if(childIdx < m_nodeChildren.size())
   {
-    this->m_nodeChildren[childIdx] = child;
+    m_nodeChildren[childIdx] = child;
   }
-  else if(childIdx == this->m_nodeChildren.size())
+  else if(childIdx == m_nodeChildren.size())
   {
-    this->m_nodeChildren.push_back(child);
+    m_nodeChildren.push_back(child);
   }
   else
   {
@@ -22,9 +22,9 @@ void JSONTreeNode::setChild(std::shared_ptr<JSONTreeNode> child, int childIdx)
 
 std::shared_ptr<JSONTreeNode> JSONTreeNode::getChild(int childIdx)
 {
-  if(childIdx < this->m_nodeChildren.size())
+  if(childIdx < m_nodeChildren.size())
   {
-    return this->m_nodeChildren[childIdx];
+    return m_nodeChildren[childIdx];
   }
   else
   {
@@ -34,9 +34,9 @@ std::shared_ptr<JSONTreeNode> JSONTreeNode::getChild(int childIdx)
 
 void JSONTreeNode::deleteChild(int childIdx)
 {
-  if(childIdx < this->m_nodeChildren.size())
+  if(childIdx < m_nodeChildren.size())
   {
-    this->m_nodeChildren.erase(this->m_nodeChildren.begin() + childIdx);
+    m_nodeChildren.erase(m_nodeChildren.begin() + childIdx);
   }
   else
   {
@@ -46,27 +46,27 @@ void JSONTreeNode::deleteChild(int childIdx)
 
 void JSONTreeNode::setNodeData(std::string key, std::string value)
 {
-  this->m_nodeData.first = key;
-  this->m_nodeData.second = value;
+  m_nodeData.first = key;
+  m_nodeData.second = value;
 }
 
 std::pair<std::string, std::string> JSONTreeNode::getNodeData()
 {
-  return this->m_nodeData;
+  return m_nodeData;
 }
 
 QJsonValue::Type JSONTreeNode::getValueType()
 {
-  return this->m_valueType;
+  return m_valueType;
 }
 
 
 void JSONTreeNode::setValueType(QJsonValue::Type valType)
 {
-  this->m_valueType = valType;
+  m_valueType = valType;
 }
 
 int JSONTreeNode::getChildrenAmount()
 {
-  return this->m_nodeChildren.size();
+  return m_nodeChildren.size();
 }

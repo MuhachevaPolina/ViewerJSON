@@ -2,21 +2,21 @@
 
 AppViewer::AppViewer(QWidget* parent) : QWidget(parent)
 {
-  this->resize(1200, 800);
+  resize(1200, 800);
 
-  this->m_quitButton = new QPushButton("exit", this);
+  m_quitButton = new QPushButton("exit", this);
 
-  // this->m_treeModel = new JSONTreeItemModel;
-  this->m_textEditor = new JSONTextEdit;
+  // m_treeModel = new JSONTreeItemModel;
+  m_textEditor = new JSONTextEdit;
 
-  this->m_layout = new QVBoxLayout;
+  m_layout = new QVBoxLayout;
 
-  this->m_jsonLayout = new QHBoxLayout;
-  this->m_jsonLayout->addWidget(this->m_textEditor);
+  m_jsonLayout = new QHBoxLayout;
+  m_jsonLayout->addWidget(m_textEditor);
 
-  this->m_layout->addLayout(this->m_jsonLayout);
-  this->m_layout->addWidget(this->m_quitButton);
-  this->setLayout(this->m_layout);
+  m_layout->addLayout(m_jsonLayout);
+  m_layout->addWidget(m_quitButton);
+  setLayout(m_layout);
 
-  connect(this->m_quitButton, &QPushButton::clicked, this, &AppViewer::close);
+  connect(m_quitButton, &QPushButton::clicked, this, &AppViewer::close);
 }
