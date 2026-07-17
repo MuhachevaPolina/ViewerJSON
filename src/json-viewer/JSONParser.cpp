@@ -95,14 +95,25 @@ void JSONParser::parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeN
     int childrenAmount = arr.size();
     std::shared_ptr<JSONTreeNode> childNode = std::make_shared<JSONTreeNode>();
 
+    if(depth == 0)
+    {
+      node->setNodeData("array", QString::fromStdString("[" + std::to_string(childrenAmount) + "]"));
+    }
+    else if(isArrayElem)
+    {
+      node->setNodeData(QString::fromStdString(std::to_string(idxInLayer)), QString::fromStdString("[" + std::to_string(childrenAmount) + "]"));
+    }
+    else
+    {
+      node->setNodeData(key, QString::fromStdString("[" + std::to_string(childrenAmount) + "]"));
+    }
+
     for(int i = 0; i < childrenAmount; ++i)
     {
       node->setChild(childNode, i);
-      // node->setNodeData(keys[i].toStdString(), obj.value(keys[i]));
-      // this->parseJsonValue(obj.value(keys[i]), ) 
+      parseJsonValue(arr[i], childNode, depth + 1, i, false, QString::fromStdString(std::to_string(i)));
       childNode = std::make_shared<JSONTreeNode>();
     }
-    // this->parseJsonValue()
   }
   else
   {
