@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-JSONTreeNode::JSONTreeNode(JSONTreeNode* parent): m_nodeParent(parent), m_valueType(QJsonValue::Type::Undefined)
+JSONTreeNode::JSONTreeNode(JSONTreeNode* parent): m_nodeParent(parent), m_valueType(QJsonValue::Type::Undefined), m_isRootNode(false)
 {}
 
 void JSONTreeNode::setChild(std::shared_ptr<JSONTreeNode> child, int childIdx)
@@ -14,6 +14,7 @@ void JSONTreeNode::setChild(std::shared_ptr<JSONTreeNode> child, int childIdx)
   else
   {
     qDebug() << "JSONTreeNode | set child problem: child is nullptr";
+    return;
   }
 
   if(childIdx < m_nodeChildren.size())
@@ -29,6 +30,7 @@ void JSONTreeNode::setChild(std::shared_ptr<JSONTreeNode> child, int childIdx)
   else
   {
     qDebug() << "JSONTreeNode | set child problem: index out of range";
+    return;
   }
 }
 
@@ -41,6 +43,7 @@ std::shared_ptr<JSONTreeNode> JSONTreeNode::getChild(int childIdx)
   else
   {
     qDebug() << "JSONTreeNode | get child problem: index out of range";
+    return;
   }
 }
 
@@ -53,6 +56,7 @@ void JSONTreeNode::deleteChild(int childIdx)
   else
   {
     qDebug() << "JSONTreeNode | delete child problem: index out of range";
+    return;
   }
 }
 
@@ -71,7 +75,6 @@ QJsonValue::Type JSONTreeNode::getValueType()
 {
   return m_valueType;
 }
-
 
 void JSONTreeNode::setValueType(QJsonValue::Type valType)
 {
@@ -101,4 +104,9 @@ void JSONTreeNode::setParent(JSONTreeNode* parentNode)
 void JSONTreeNode::setIdxAmongParentNodeChildren(int idx)
 {
   m_idxAmongParentNodeChildren = idx;
+}
+
+void JSONTreeNode::makeNodeRoot()
+{
+  m_isRootNode = true;
 }

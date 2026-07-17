@@ -29,6 +29,8 @@ class JSONTreeNode
   JSONTreeNode* getParent();
   void setParent(JSONTreeNode* parentNode);
 
+  void makeNodeRoot();
+
  private:
   std::vector<std::shared_ptr<JSONTreeNode>> m_nodeChildren;
   JSONTreeNode* m_nodeParent;
@@ -37,6 +39,7 @@ class JSONTreeNode
   QJsonValue::Type m_valueType;
 
   int m_idxAmongParentNodeChildren;
+  bool m_isRootNode;
 };
 
 // one string key-value per node 

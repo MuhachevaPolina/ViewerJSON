@@ -47,6 +47,7 @@ void JSONParser::parseJsonDocument()
   }
 
   std::shared_ptr<JSONTreeNode> rootNode = std::make_shared<JSONTreeNode>(nullptr);
+  rootNode->makeNodeRoot();
   parseJsonValue(val, rootNode, 0, 0, false, QString());
   m_rootNode = rootNode;
 }
@@ -93,7 +94,7 @@ void JSONParser::parseJsonValue(const QJsonValue& val,
     for(int i = 0; i < childrenAmount; ++i)
     {
       curNode->setChild(childNode, i);
-      parseJsonValue(obj.value(keys[i]), childNode, depth + 1, i, true,
+      parseJsonValue(obj.value(keys[i]), childNode, depth + 1, i, false,
                      keys[i]);
       childNode = std::make_shared<JSONTreeNode>(&(*curNode));
     }
@@ -125,14 +126,33 @@ void JSONParser::parseJsonValue(const QJsonValue& val,
     for(int i = 0; i < childrenAmount; ++i)
     {
       curNode->setChild(childNode, i);
-      parseJsonValue(arr[i], childNode, depth + 1, i, false,
+      parseJsonValue(arr[i], childNode, depth + 1, i, true,
                      QString::fromStdString(std::to_string(i)));
       childNode = std::make_shared<JSONTreeNode>(&(*curNode));
     }
   }
   else
   {
-    QString str = val.toString();
+    QString str;
+    if(val.isString())
+    {
+      str = val.toString();
+    }
+    else if(val.isDouble())
+    {
+      str = QString::fromStdString(std::to_string(val.toDouble()));
+    }
+    else if(val.isBool())
+    {
+      if(val.toBool())
+      {
+        str = "true";
+      }
+      else
+      {
+        str = "false";
+      }
+    }
 
     if(!isArrayElem)
     {

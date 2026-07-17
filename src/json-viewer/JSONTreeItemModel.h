@@ -3,6 +3,7 @@
 #include <src/json-viewer/JSONTreeNode.h>
 
 #include <QAbstractItemModel>
+#include <QModelIndex>
 
 #include <memory>
 
@@ -10,9 +11,15 @@ class JSONTreeItemModel: public QAbstractItemModel
 {
   Q_OBJECT
 public:
-  JSONTreeItemModel();
-  void setTreeRoot();
+  JSONTreeItemModel(QObject* parent, const std::shared_ptr<JSONTreeNode> treeRoot);
+  // void setTreeRoot(std::shared_ptr<JSONTreeNode> rootNode);
+
+  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
 private:
-  std::shared_ptr<JSONTreeNode> m_treeRoot;
+  const std::shared_ptr<JSONTreeNode> m_treeRoot;
+
+  int countTreeHight(int prevHight, const std::shared_ptr<JSONTreeNode> curNode) const;
+  int countNodesAmount(const std::shared_ptr<JSONTreeNode> curNode) const;
 };
