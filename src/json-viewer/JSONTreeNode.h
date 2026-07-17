@@ -11,7 +11,7 @@
 class JSONTreeNode
 {
  public:
-  JSONTreeNode();
+  JSONTreeNode(JSONTreeNode* parent);
 
   void setChild(std::shared_ptr<JSONTreeNode> child, int clildIdx);
   std::shared_ptr<JSONTreeNode> getChild(int childIdx);
@@ -24,11 +24,19 @@ class JSONTreeNode
   QJsonValue::Type getValueType();
   void setValueType(QJsonValue::Type valType);
 
+  int getIdxAmongParentNodeChildren();
+  void setIdxAmongParentNodeChildren(int idx);
+  JSONTreeNode* getParent();
+  void setParent(JSONTreeNode* parentNode);
+
  private:
   std::vector<std::shared_ptr<JSONTreeNode>> m_nodeChildren;
+  JSONTreeNode* m_nodeParent;
 
   std::pair<QString, QString> m_nodeData;  // use "[size]" for arrays and "{size}" for objects value
   QJsonValue::Type m_valueType;
+
+  int m_idxAmongParentNodeChildren;
 };
 
 // one string key-value per node 
