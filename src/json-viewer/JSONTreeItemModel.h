@@ -17,6 +17,10 @@ public:
   int columnCount(const QModelIndex& parent = QModelIndex()) const override;
   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
+  QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+  QModelIndex parent(const QModelIndex& child = QModelIndex()) const override;
+  QVariant data(const QModelIndex& idx = QModelIndex(), int role = Qt::DisplayRole) const override;
+
 private:
   const std::shared_ptr<JSONTreeNode> m_treeRoot;
 

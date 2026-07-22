@@ -4,6 +4,10 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 add_library(JSONViewer STATIC
     AppViewer.cpp
     JSONTextEdit.cpp
+    JSONParser.cpp
+    JSONTreeItemModel.cpp
+    JSONTreeNode.cpp
+    JSONTreeView.cpp
 )
 
 target_include_directories(JSONViewer PUBLIC

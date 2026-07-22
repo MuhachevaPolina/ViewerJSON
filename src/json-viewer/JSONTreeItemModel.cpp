@@ -1,5 +1,7 @@
 #include <src/json-viewer/JSONTreeItemModel.h>
 
+#include <utility>
+
 JSONTreeItemModel::JSONTreeItemModel(QObject* parent, const std::shared_ptr<JSONTreeNode> treeRoot): 
 QAbstractItemModel(parent), m_treeRoot(treeRoot)
 {}
@@ -13,7 +15,7 @@ int JSONTreeItemModel::rowCount(const QModelIndex& parent) const
 {
   if(!m_treeRoot)
   {
-    return -1;
+    return 0;
   }
 
   if(!parent.isValid())
@@ -22,9 +24,103 @@ int JSONTreeItemModel::rowCount(const QModelIndex& parent) const
   }
   else
   {
-    return countNodesAmount(m_treeRoot);
+    JSONTreeNode* parentNode = static_cast<JSONTreeNode*>(parent.internalPointer());
+    return parentNode->getChildrenAmount();
   }
 }
+
+QModelIndex JSONTreeItemModel::index(int row, int column, const QModelIndex& parent) const
+{
+  if(!m_treeRoot)
+  {
+    return QModelIndex();
+  }
+
+  if(!hasIndex(row, column, parent))
+  {
+    return QModelIndex();
+  }
+
+  if(!parent.isValid())
+  {
+    return createIndex(row, column, m_treeRoot.get());
+  }
+  else
+  {
+    JSONTreeNode* parentNode = static_cast<JSONTreeNode*>(parent.internalPointer());
+    std::shared_ptr<JSONTreeNode> childNode = parentNode->getChild(row);
+    return createIndex(row, column, childNode.get());
+  }
+}
+
+QModelIndex JSONTreeItemModel::parent(const QModelIndex& child) const
+{
+  if(!child.isValid())
+  {
+    return QModelIndex();
+  }
+
+  JSONTreeNode* childNode = static_cast<JSONTreeNode*>(child.internalPointer());
+
+  if(!childNode)
+  {
+    return QModelIndex();
+  }
+
+  JSONTreeNode* parentNode = childNode->getParent();
+
+  if(!parentNode)
+  {
+    return QModelIndex();
+  }
+
+  if(parentNode == m_treeRoot.get())
+  {
+    return createIndex(0, 0, m_treeRoot.get());
+  }
+  else
+  {
+    return createIndex(parentNode->getIdxAmongParentNodeChildren(), 0, parentNode);
+  }
+}
+
+QVariant JSONTreeItemModel::data(const QModelIndex& idx, int role) const
+{
+  if(role != Qt::DisplayRole)
+  {
+    return QVariant();
+  }
+
+  if(!idx.isValid())
+  {
+    return QVariant();
+  }
+
+  JSONTreeNode* node = static_cast<JSONTreeNode*>(idx.internalPointer());
+  if(!node)
+  {
+    return QVariant();
+  }
+
+  std::pair<QString, QString> nodeData = node->getNodeData();
+  QString strData = nodeData.first;
+
+  if(node->getValueType() == QJsonValue::Type::Array || node->getValueType() == QJsonValue::Type::Object)
+  {
+    strData += " ";
+  }
+  else
+  {
+    strData += ": ";
+  }
+
+  strData += nodeData.second;
+
+  QVariant resData = QVariant::fromValue(strData);
+  return resData;
+}
+
+// unused
 
 int JSONTreeItemModel::countNodesAmount(const std::shared_ptr<JSONTreeNode> curNode) const
 {

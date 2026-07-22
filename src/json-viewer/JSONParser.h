@@ -10,7 +10,6 @@
 
 class JSONParser
 {
-  Q_OBJECT
 public:
   void setJsonDocument();
   void parseJsonDocument();
@@ -19,6 +18,6 @@ public:
 private:
   void parseJsonValue(const QJsonValue& val, std::shared_ptr<JSONTreeNode> curNode, int depth, int idxInLayer, bool isArrayElem, QString key);
 
-  QJsonDocument* m_document;
+  QJsonDocument m_document;
   std::shared_ptr<JSONTreeNode> m_rootNode;
 };

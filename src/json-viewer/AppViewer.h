@@ -23,6 +23,10 @@ private:
 
   QVBoxLayout* m_layout;
   QHBoxLayout* m_jsonLayout;
+  QHBoxLayout* m_buttonsLayout;
 
+  QPushButton* m_openFileButton;
+  QPushButton* m_expandButton;
+  QPushButton* m_updateTreeButton;
   QPushButton* m_quitButton;
 };

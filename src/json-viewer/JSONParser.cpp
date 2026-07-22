@@ -4,6 +4,7 @@
 
 void JSONParser::setJsonDocument()
 {
+  // mock
   QString jsonInString = QString::fromUtf8(R"json(
 {
   "course": "Computer science",
@@ -25,7 +26,7 @@ void JSONParser::setJsonDocument()
 )json");
 
   QJsonParseError parseError;
-  *m_document = QJsonDocument::fromJson(jsonInString.toUtf8(), &parseError);
+  m_document = QJsonDocument::fromJson(jsonInString.toUtf8(), &parseError);
 
   if(parseError.error != QJsonParseError::NoError)
   {
@@ -37,13 +38,13 @@ void JSONParser::parseJsonDocument()
 {
   QJsonValue val;
 
-  if(m_document->isObject())
+  if(m_document.isObject())
   {
-    val = m_document->object();
+    val = m_document.object();
   }
-  else if(m_document->isArray())
+  else if(m_document.isArray())
   {
-    val = m_document->array();
+    val = m_document.array();
   }
 
   std::shared_ptr<JSONTreeNode> rootNode = std::make_shared<JSONTreeNode>(nullptr);

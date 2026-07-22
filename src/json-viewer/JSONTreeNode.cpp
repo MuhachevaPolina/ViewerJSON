@@ -43,7 +43,7 @@ std::shared_ptr<JSONTreeNode> JSONTreeNode::getChild(int childIdx)
   else
   {
     qDebug() << "JSONTreeNode | get child problem: index out of range";
-    return;
+    return nullptr;
   }
 }
 
