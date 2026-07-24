@@ -16,8 +16,10 @@ public:
   AppViewer(QWidget* parent = nullptr);
 
 private:
+  void updateTree();
+
   QTextEdit* m_textEditor;
-  QAbstractItemModel* m_treeModel;
+  QAbstractItemModel* m_treeModel = nullptr;
   QTreeView* m_treeViewer;
   FilesHandler* m_filesHandler;
 

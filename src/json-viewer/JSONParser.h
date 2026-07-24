@@ -11,7 +11,7 @@
 class JSONParser
 {
 public:
-  void setJsonDocument();
+  bool setJsonDocument(const QString& jsonText);
   void parseJsonDocument();
   std::shared_ptr<JSONTreeNode> getTreeNode();
 

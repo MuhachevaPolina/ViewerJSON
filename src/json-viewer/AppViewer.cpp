@@ -8,16 +8,10 @@ AppViewer::AppViewer(QWidget* parent) : QWidget(parent)
 
   m_quitButton = new QPushButton("exit", this);
 
-  JSONParser parser;
-  parser.setJsonDocument();
-  parser.parseJsonDocument();
-
-  m_treeModel = new JSONTreeItemModel(this, parser.getTreeNode());
   m_textEditor = new JSONTextEdit;
-
   m_treeViewer = new JSONTreeView(this);
-  m_treeViewer->setModel(m_treeModel);
-  m_treeViewer->expandAll();
+
+  m_treeViewer->setHeaderHidden(true);
   m_treeViewer->setHeaderHidden(true);
 
   m_layout = new QVBoxLayout;
@@ -40,4 +34,42 @@ AppViewer::AppViewer(QWidget* parent) : QWidget(parent)
   setLayout(m_layout);
 
   connect(m_quitButton, &QPushButton::clicked, this, &AppViewer::close);
+  connect(m_updateTreeButton, &QPushButton::clicked, this, &AppViewer::updateTree);
+}
+
+void AppViewer::updateTree()
+{
+  const QString jsonText = m_textEditor->toPlainText();
+
+  JSONParser parser;
+
+  if(!parser.setJsonDocument(jsonText))
+  {
+    return;
+  }
+
+  parser.parseJsonDocument();
+
+  std::shared_ptr<JSONTreeNode> rootNode =
+      parser.getTreeNode();
+
+  if(!rootNode)
+  {
+    qWarning() << "JSON tree root was not created";
+    return;
+  }
+
+  auto* newModel =
+      new JSONTreeItemModel(this, rootNode);
+
+  m_treeViewer->setModel(newModel);
+
+  if(m_treeModel)
+  {
+    m_treeModel->deleteLater();
+  }
+
+  m_treeModel = newModel;
+
+  m_treeViewer->expandAll();
 }

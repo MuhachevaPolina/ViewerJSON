@@ -2,36 +2,25 @@
 
 #include <vector>
 
-void JSONParser::setJsonDocument()
+bool JSONParser::setJsonDocument(const QString& jsonText)
 {
-  // mock
-  QString jsonInString = QString::fromUtf8(R"json(
-{
-  "course": "Computer science",
-  "students": [
-    {
-      "name": "Иван",
-      "age": 25
-    },
-    {
-      "name": "Петр",
-      "age": 27
-    },
-    {
-      "name": "Софья",
-      "age": 35
-    }
-  ]
-}
-)json");
-
   QJsonParseError parseError;
-  m_document = QJsonDocument::fromJson(jsonInString.toUtf8(), &parseError);
+
+  QJsonDocument newDocument =
+      QJsonDocument::fromJson(jsonText.toUtf8(), &parseError);
 
   if(parseError.error != QJsonParseError::NoError)
   {
-    qDebug() << parseError.errorString();
+    qWarning() << "JSON parsing error:"
+               << parseError.errorString()
+               << "at offset"
+               << parseError.offset;
+
+    return false;
   }
+
+  m_document = newDocument;
+  return true;
 }
 
 void JSONParser::parseJsonDocument()
